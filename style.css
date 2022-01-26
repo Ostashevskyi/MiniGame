@@ -46,4 +46,12 @@
 .wrapper .main .el.true {
   background: lightgreen;
 }
+
+.wrapper #start.disable {
+  display: none;
+}
+
+.wrapper .restartBtn {
+  margin: 10px 0px 0px 0px;
+}
 /*# sourceMappingURL=style.css.map */
