@@ -7,10 +7,8 @@ function getRandomNum(min, max) {
   	return Math.floor(Math.random() * (max - min)) + min;
 }
 
-const randomArr = [];
-
-
 function numWithoutRepeat () {
+	const randomArr = [];
 	for (let i = 0; i < 25; i++) {
 		const num = getRandomNum(1, 26);
 		if (!randomArr.includes(num)) {
@@ -19,7 +17,7 @@ function numWithoutRepeat () {
 			i--;
 		}
 	}
-
+  return randomArr;
 }
 
 function getRandomColor() {
@@ -36,8 +34,14 @@ function getRandomSize() {
 }
 
 function start() {
-	numWithoutRepeat();
-	createNotificationParagraph();
+	const randomArr = numWithoutRepeat();
+	if (document.querySelector('.time') == null)
+		createNotificationParagraph();
+	countdown();
+	if (document.querySelector('.restartBtn') == null) {
+		createRestartBtn();
+	}
+	
 	for (let i = 0; i < el.length; i++) {
 		el[i].textContent = randomArr[i];
 		el[i].style.color = getRandomColor();
@@ -70,7 +74,9 @@ function gameOver() {
 	}
 	clearTimeout(timer);
 	document.querySelector('.time').textContent = 'Game Over';
-	createRestartBtn();
+	if (document.querySelector('.restartBtn') == null) {
+		createRestartBtn();
+	}
 }
 
 function win() {
@@ -79,7 +85,10 @@ function win() {
 	}
 	clearTimeout(timer);
 	document.querySelector('.time').textContent = "Winner!!";
-	createRestartBtn();
+	if (document.querySelector('.restartBtn') == null) {
+		createRestartBtn();
+	}
+
 }
 
 let timer;
@@ -89,7 +98,6 @@ function createNotificationParagraph() {
 	const p = document.createElement('p');
 	p.classList.add('time');
 	document.querySelector('.wrapper').insertAdjacentElement("afterBegin", p);
-	countdown();
 
 }
 
@@ -109,18 +117,20 @@ function createRestartBtn() {
 	restartBtn.addEventListener('click', restart);
 	restartBtn.textContent = "Restart";
 	//----------------
-	restartBtn.disabled = true
+	// restartBtn.disabled = true
 	//--------------
 	document.querySelector('.wrapper').appendChild(restartBtn);
+	return restartBtn;
 }
 
 function restart() {
 	time = 60;
 	counter = 1;
-	start();
+	clearTimeout(timer);
+	start();  
 }
 
-
-// restart();
-
-start()
+document.querySelector('#start').addEventListener('click', () => {
+	start();
+	document.querySelector("#start").classList.add('disable');
+});
